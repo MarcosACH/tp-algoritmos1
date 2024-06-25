@@ -2,35 +2,37 @@ package olapcube.estructura;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Representa una celda de un cubo OLAP.
  * Cada celda almacena valores para uno o más hechos.
- * A su vez, cada hecho puede tener uno o más valores. Por ejemplo, cuando se agrupan
- * varias celdas en una sola, se pueden tener varios valores para un mismo hecho.
+ * A su vez, cada hecho puede tener uno o más valores. Por ejemplo, cuando se
+ * agrupan
+ * varias celdas en una sola, se pueden tener varios valores para un mismo
+ * hecho.
  * 
  * Ejemplo de celda agrupada con dos hechos 'valor' y 'cantidad':
- 
-    | valor | cantidad |
-    |-------|----------|
-    |  10   |    5     |
-    |  20   |    3     |
-    |  10   |    2     |
-    |  25   |    1     |
-
-    En este caso el Map de la celda tendría la siguiente estructura:
-    {
-        "valor": [10, 20, 10, 25],
-        "cantidad": [5, 3, 2, 1]
-    }
+ * 
+ * | valor | cantidad |
+ * |-------|----------|
+ * | 10 | 5 |
+ * | 20 | 3 |
+ * | 10 | 2 |
+ * | 25 | 1 |
+ * 
+ * En este caso el Map de la celda tendría la siguiente estructura:
+ * {
+ * "valor": [10, 20, 10, 25],
+ * "cantidad": [5, 3, 2, 1]
+ * }
  */
 public class Celda {
-    private Map<String, List<Double>> hechos;   // Mapeo de nombres de hecho a valores
-    
+    private Map<String, List<Double>> hechos; // Mapeo de nombres de hecho a valores
+
     public Celda() {
         hechos = new HashMap<>();
     }
@@ -38,7 +40,7 @@ public class Celda {
     public boolean esVacia() {
         return hechos.isEmpty();
     }
-    
+
     @Override
     public String toString() {
         return "Celda [hechos=" + hechos.keySet() + "]";
@@ -48,6 +50,7 @@ public class Celda {
         // Crear una nueva copia del conjunto de claves
         return new HashSet<>(hechos.keySet());
     }
+
     /**
      * Obtiene los valores de un hecho
      * 
@@ -65,7 +68,7 @@ public class Celda {
      * Agrega un valor a un hecho
      * 
      * @param nombreHecho Nombre del hecho
-     * @param valor Valor a agregar
+     * @param valor       Valor a agregar
      */
     public void agregarHecho(String nombreHecho, Double valor) {
         if (!hechos.containsKey(nombreHecho)) {

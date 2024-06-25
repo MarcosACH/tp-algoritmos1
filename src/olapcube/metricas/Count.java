@@ -14,6 +14,6 @@ public class Count extends Medida {
     @Override
     public double calcular(List<Double> valores) {
         int cant = valores.size();
-        return cant;        
+        return cant;
     }
 }

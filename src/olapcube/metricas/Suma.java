@@ -17,7 +17,6 @@ public class Suma extends Medida {
         for (Double valor : valores) {
             suma += valor;
         }
-        
         return suma;
     }
 }

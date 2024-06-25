@@ -23,5 +23,4 @@ public abstract class Medida {
      * @return Medida calculada
      */
     public abstract double calcular(List<Double> valores);
-
 }

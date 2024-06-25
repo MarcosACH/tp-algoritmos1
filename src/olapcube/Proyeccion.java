@@ -1,6 +1,5 @@
 package olapcube;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import olapcube.estructura.Celda;
@@ -11,69 +10,67 @@ import olapcube.estructura.Dimension;
  * Clase que representa una proyeccion de un cubo OLAP
  */
 public class Proyeccion {
-    private Cubo cubo;              // Cubo sobre el que se realiza la proyeccion
-    private int maxFilas;      // Maximo de filas a mostrar
-    private int maxColumnas;   // Maximo de columnas a mostrar
-    private String hecho;           // Hecho a proyectar
-    private String medida;          // Medida a proyectar
-    
+    private Cubo cubo; // Cubo sobre el que se realiza la proyeccion
+    private int maxFilas; // Maximo de filas a mostrar
+    private int maxColumnas; // Maximo de columnas a mostrar
+    private String hecho; // Hecho a proyectar
+    private String medida; // Medida a proyectar
     private String separador = " | ";
 
     /**
      * Constructor de la clase
      * 
-     * @param cubo Cubo sobre el que se realiza la proyeccion
-     * @param nombreHecho Hecho que se quiere mostrar
+     * @param cubo         Cubo sobre el que se realiza la proyeccion
+     * @param nombreHecho  Hecho que se quiere mostrar
      * @param nombreMedida Medida con la cual se va a calcular
-     * @param maxFilas Cantidad máxima de filas que se quieren proyectar
-     * @param maxColumnas Cantidad máxima de columnas que se quieren proyectar
-     * @throws IllegalArgumentException si nombreHecho no es un hecho válido
-     * @throws IllegalArgumentException si nombreMedida no es una medida válida
-     * @throws IllegalArgumentException si maxFilas es menor a 0
-     * @throws IllegalArgumentException si maxColumnas es menor a 0
+     * @param maxFilas     Cantidad máxima de filas que se quieren proyectar
+     * @param maxColumnas  Cantidad máxima de columnas que se quieren proyectar
+     * @throws IllegalArgumentException Si nombreHecho no es un hecho válido
+     * @throws IllegalArgumentException Si nombreMedida no es una medida válida
+     * @throws IllegalArgumentException Si maxFilas es menor a 0
+     * @throws IllegalArgumentException Si maxColumnas es menor a 0
      */
     public Proyeccion(Cubo cubo, String nombreHecho, String nombreMedida, int maxFilas, int maxColumnas) {
         this.cubo = cubo;
-        
-        if (maxFilas < 0){
+
+        if (maxFilas < 0) {
             throw new IllegalArgumentException("Tamaño máximo de filas inválido: " + maxFilas);
         }
         this.maxFilas = maxFilas;
 
-        if (maxColumnas < 0){
+        if (maxColumnas < 0) {
             throw new IllegalArgumentException("Tamaño máximo de columnas inválido: " + maxColumnas);
         }
         this.maxColumnas = maxColumnas;
-    
+
         boolean hecho_esta = false;
-        for (String hecho : cubo.getNombresHechos()){
-            if (hecho.equals(nombreHecho)){
+        for (String hecho : cubo.getNombresHechos()) {
+            if (hecho.equals(nombreHecho)) {
                 hecho_esta = true;
             }
         }
-        if (hecho_esta == false){
+
+        if (hecho_esta == false) {
             throw new IllegalArgumentException("nombre hecho no encontrado: " + nombreHecho);
         }
         this.hecho = nombreHecho;
-        
-        
+
         boolean medida_esta = false;
-        for (String medida : cubo.getMedidas()){
-            if (medida.equals(nombreMedida)){
+        for (String medida : cubo.getMedidas()) {
+            if (medida.equals(nombreMedida)) {
                 medida_esta = true;
             }
         }
-        if (medida_esta == false){
+
+        if (medida_esta == false) {
             throw new IllegalArgumentException("nombre medida no encontrado: " + nombreMedida);
         }
-        this.medida = nombreMedida;         // Selecciona la primera medida por defecto, modificado
+        this.medida = nombreMedida; // Selecciona la primera medida por defecto, modificado
     }
 
-    
     public void seleccionarHecho(String hecho) {
         this.hecho = hecho;
     }
-
 
     public void seleccionarMedida(String medida) {
         this.medida = medida;
@@ -87,8 +84,8 @@ public class Proyeccion {
     public void print(String nombreDimension) {
         Dimension dimension = cubo.getDimension(nombreDimension);
         System.out.println("Proyeccion de " + dimension.getNombre());
-        
-        String[] columnas = new String[] {hecho + " (" + medida + ")"};
+
+        String[] columnas = new String[] { hecho + " (" + medida + ")" };
 
         // Genera celdas de la proyeccion
         Double[][] valores = new Double[dimension.getValores().length][1];
@@ -105,14 +102,15 @@ public class Proyeccion {
     /**
      * Muestra la proyeccion de dos dimensiones
      * 
-     * @param nombreDim1 Nombre de la primera dimension (filas)
-     * @param nombreDim2 Nombre de la segunda dimension (columnas)
+     * @param nombreDim1 Nombre de la primera dimensión (filas)
+     * @param nombreDim2 Nombre de la segunda dimensión (columnas)
      */
     public void print(String nombreDim1, String nombreDim2) {
         Dimension dimension1 = cubo.getDimension(nombreDim1);
         Dimension dimension2 = cubo.getDimension(nombreDim2);
-        System.out.println("Proyeccion de " + dimension1.getNombre() + " vs " + dimension2.getNombre() + " - " + hecho + " (" + medida + ")");
-        
+        System.out.println("Proyeccion de " + dimension1.getNombre() + " vs " + dimension2.getNombre() + " - " + hecho
+                + " (" + medida + ")");
+
         // Genera celdas de la proyeccion
         Double[][] valores = new Double[dimension1.getValores().length][dimension2.getValores().length];
         for (int i = 0; i < dimension1.getValores().length; i++) {
@@ -131,14 +129,14 @@ public class Proyeccion {
     /**
      * Muestra una tabla en consola
      * 
-     * @param indice Labels o valores de las filas
-     * @param header Labels o valores de las columnas
+     * @param indice  Labels o valores de las filas
+     * @param header  Labels o valores de las columnas
      * @param valores Valores de la tabla
      */
 
     private void printTablaConsola(String[] indice, String[] header, Double[][] valores) {
-        int cellPadding = 1;  // Espacio entre el contenido y el borde de la celda
-    
+        int cellPadding = 1; // Espacio entre el contenido y el borde de la celda
+
         // Ajuste de índice y header según maxFilas y maxColumnas
         if (indice.length > maxFilas) {
             indice = Arrays.copyOfRange(indice, 0, maxFilas);
@@ -146,10 +144,10 @@ public class Proyeccion {
         if (header.length > maxColumnas) {
             header = Arrays.copyOfRange(header, 0, maxColumnas);
         }
-    
+
         // Crear una lista para los anchos de cada columna
         int[] anchoColumnas = new int[header.length + 1];
-    
+
         // Calcular el ancho máximo de la primera columna (índice)
         anchoColumnas[0] = cellPadding;
         for (String s : indice) {
@@ -157,7 +155,7 @@ public class Proyeccion {
                 anchoColumnas[0] = s.length() + cellPadding;
             }
         }
-    
+
         // Calcular el ancho máximo de cada columna del header y valores
         for (int j = 0; j < header.length; j++) {
             anchoColumnas[j + 1] = header[j].length() + cellPadding;
@@ -175,7 +173,7 @@ public class Proyeccion {
                 }
             }
         }
-    
+
         // Construir los formatos para cada columna
         String[] formatos = new String[anchoColumnas.length];
         for (int i = 0; i < formatos.length; i++) {
@@ -185,7 +183,7 @@ public class Proyeccion {
         for (int i = 1; i < formatoNumeros.length; i++) {
             formatoNumeros[i] = "%" + anchoColumnas[i] + ".2f";
         }
-    
+
         // Print del header
         System.out.printf(formatos[0], "");
         System.out.print(separador);
@@ -194,17 +192,18 @@ public class Proyeccion {
             System.out.print(separador);
         }
         System.out.println();
-    
-        // Ajustar la línea de separación para que cubra hasta donde terminan los headers
+
+        // Ajustar la línea de separación para que cubra hasta donde terminan los
+        // headers
         int anchoTotal = cellPadding;
         for (int j = 0; j < header.length + 1; j++) {
             anchoTotal += anchoColumnas[j] + separador.length();
         }
         anchoTotal -= separador.length(); // No necesitamos un separador al final
-    
+
         // Imprimir la línea de separación
         System.out.println(new String(new char[anchoTotal]).replace('\0', '-'));
-    
+
         // Mostrar los valores
         for (int i = 0; i < indice.length; i++) {
             System.out.printf(formatos[0], indice[i]);
